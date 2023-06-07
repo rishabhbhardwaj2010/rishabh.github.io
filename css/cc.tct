@@ -105,7 +105,7 @@ class SupportBot extends Component {
         steps={updatedSteps}
         floating={true}
         headerTitle="Support Bot"
-        botAvatar="https://i.imgur.com/nh2QnWZ.png"
+        //botAvatar="https://i.imgur.com/nh2QnWZ.png"
         enableMobileAutoFocus={true}
       />
     );
