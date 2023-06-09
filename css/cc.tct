@@ -6,6 +6,7 @@ class SupportBot extends Component {
     super(props);
 
     this.state = {
+      chatbot: null,
       steps: [
         {
           id: '1',
@@ -50,12 +51,13 @@ class SupportBot extends Component {
         {
           id: 'backToMenu',
           message: 'Do you have any other questions?',
-          trigger: 'menuOrEnd'
+          trigger: 'menuOrSearchOrEnd'
         },
         {
-          id: 'menuOrEnd',
+          id: 'menuOrSearchOrEnd',
           options: [
             { value: 'menu', label: 'Back to Menu', trigger: 'menu' },
+            { value: 'search', label: 'Search Other Keyword', trigger: 'searchKeyword' },
             { value: 'end', label: 'End Conversation', trigger: 'end' }
           ]
         },
@@ -68,18 +70,41 @@ class SupportBot extends Component {
     };
   }
 
-  handleButtonClick = (trigger) => {
-    const menuStep = this.state.steps.find((step) => step.id === 'menu');
-    menuStep.trigger = 'displayResult';
+  componentDidMount() {
+    this.setState({ chatbot: this.chatbot });
+  }
 
-    if (trigger === 'menu') {
-      this.setState({ steps: [...this.state.steps] }, () => {
-        this.chatbot.triggerNextStep({ value: trigger, trigger });
-      });
-    } else {
-      this.chatbot.triggerNextStep({ value: trigger, trigger });
-    }
-  };
+  handleButtonClick = (trigger) => {
+  const menuStep = this.state.steps.find((step) => step.id === 'menu');
+  menuStep.trigger = 'displayResult';
+
+  if (trigger === 'menu' || trigger === 'search') {
+    this.setState({ steps: [...this.state.steps] }, () => {
+      this.state.chatbot.triggerNextStep({ value: trigger, trigger });
+    });
+  } else {
+    const noSearchFoundStep = {
+      id: 'noSearchFound',
+      message: 'No matching results found for your search.',
+      trigger: 'raiseTicket'
+    };
+
+    const raiseTicketStep = {
+      id: 'raiseTicket',
+      message: 'Raise a ticket to Service Now: google.com',
+      trigger: 'menuOrSearchOrEnd'
+    };
+
+    // Add the new steps to the state
+    this.setState(
+      { steps: [...this.state.steps, noSearchFoundStep, raiseTicketStep] },
+      () => {
+        this.state.chatbot.triggerNextStep({ value: trigger, trigger });
+      }
+    );
+  }
+};
+
 
   render() {
     const { steps } = this.state;
@@ -105,7 +130,7 @@ class SupportBot extends Component {
         steps={updatedSteps}
         floating={true}
         headerTitle="Support Bot"
-        //botAvatar="https://i.imgur.com/nh2QnWZ.png"
+        botAvatar="https://i.imgur.com/nh2QnWZ.png"
         enableMobileAutoFocus={true}
       />
     );
@@ -143,8 +168,14 @@ const SearchResult = (props) => {
       </div>
     );
   } else {
-    return <p>No matching results found for your search.</p>;
+    return (
+      <div>
+        <p>No matching results found for your search.</p>
+        <p>Raise a ticket to Service Now: <a href="google.com">google</a></p>
+      </div>
+    );
   }
 };
 
 export default SupportBot;
+
