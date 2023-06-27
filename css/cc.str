@@ -95,3 +95,32 @@ $(document).ready(function(){
     // ...
 });
 
+//to handle /search.hbs
+
+const express = require('express');
+const app = express();
+
+// Existing route handlers
+const routes = [
+  require('./asset'),
+  require('./download'),
+  require('./sendmail'),
+  require('./export'),
+  require('./congress').linkedList,
+  require('./congress').congress,
+];
+
+// Add the route handler for /search
+app.get('/search', (req, res) => {
+  // Handle the search request here
+  // You can render the search.hbs template or send a response
+  res.render('search'); // Assuming you're using a template engine like Handlebars
+});
+
+// Add other route handlers
+routes.forEach(route => route(app));
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
