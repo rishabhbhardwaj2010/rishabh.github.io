@@ -1,0 +1,34 @@
+<div>
+            <input type="text" id="search-input" placeholder="Search by indication purpose">
+            <button onclick="searchPosters()">Search</button>
+</div>
+
+var allPosters = {{JSON.stringify(posters)}};
+
+    function searchPosters() {
+        var searchInput = document.getElementById("search-input").value.toLowerCase();
+        var filteredPosters = [];
+
+        // Filter posters by indication purpose
+        filteredPosters = allPosters.filter(function(poster) {
+            return poster.indicationPurpose.toLowerCase().includes(searchInput);
+        });
+
+        // Render filtered posters
+        renderPosters(filteredPosters);
+    }
+
+    function renderPosters(posters) {
+        var posterContainer = document.getElementById("posters-container");
+        posterContainer.innerHTML = "";
+
+        posters.forEach(function(poster) {
+            var posterCard = document.createElement("div");
+            posterCard.classList.add("poster-card");
+
+            // Create poster card elements and populate with data
+            // ...
+
+            posterContainer.appendChild(posterCard);
+        });
+    }
