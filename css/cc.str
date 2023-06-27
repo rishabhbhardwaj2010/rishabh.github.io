@@ -22,25 +22,34 @@ function renderPosters() {
   var posterContainer = document.getElementById('posters-container');
   posterContainer.innerHTML = '';
 
-  filteredPosters.forEach(function(poster) {
-    // Create the poster card element
-    var posterCard = document.createElement('div');
-    posterCard.className = 'poster-card';
+  if (filteredPosters.length === 0) {
+    // Display "No posters found" message
+    var noPostersMessage = document.createElement('p');
+    noPostersMessage.textContent = 'No posters found.';
+    posterContainer.appendChild(noPostersMessage);
+  } else {
+    // Display the poster cards
+    filteredPosters.forEach(function(poster) {
+      // Create the poster card element
+      var posterCard = document.createElement('div');
+      posterCard.className = 'poster-card';
 
-    // Create and populate the poster title element
-    var posterTitle = document.createElement('h4');
-    posterTitle.textContent = poster.title;
-    posterCard.appendChild(posterTitle);
+      // Create and populate the poster title element
+      var posterTitle = document.createElement('h4');
+      posterTitle.textContent = poster.title;
+      posterCard.appendChild(posterTitle);
 
-    // Create and populate the indication purpose element
-    var indicationPurpose = document.createElement('p');
-    indicationPurpose.textContent = 'Indication Purpose: ' + poster.indicationPurpose;
-    posterCard.appendChild(indicationPurpose);
+      // Create and populate the indication purpose element
+      var indicationPurpose = document.createElement('p');
+      indicationPurpose.textContent = 'Indication Purpose: ' + poster.indicationPurpose;
+      posterCard.appendChild(indicationPurpose);
 
-    // Append the poster card to the container
-    posterContainer.appendChild(posterCard);
-  });
+      // Append the poster card to the container
+      posterContainer.appendChild(posterCard);
+    });
+  }
 }
+
 
 <div>
         <label for="filter-purpose">Filter by Purpose:</label>
