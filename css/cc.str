@@ -32,3 +32,49 @@ var allPosters = {{JSON.stringify(posters)}};
             posterContainer.appendChild(posterCard);
         });
     }
+
+
+<div>
+        <label for="filter-purpose">Filter by Purpose:</label>
+        <select id="filter-purpose">
+            <option value="">All</option>
+            <option value="Purpose 1">Purpose 1</option>
+            <option value="Purpose 2">Purpose 2</option>
+            <option value="Purpose 3">Purpose 3</option>
+            <!-- Add more options for different purposes -->
+        </select>
+    </div>
+
+$(document).ready(function(){
+    // ...
+
+    // Event listener for the filter dropdown
+    $("#filter-purpose").change(function() {
+        var selectedPurpose = $(this).val();
+        filterPostersByPurpose(selectedPurpose);
+    });
+
+    // Function to filter posters by purpose
+    function filterPostersByPurpose(purpose) {
+        var $posters = $(".posterCard");
+
+        // Show all posters if no purpose is selected
+        if (purpose === "") {
+            $posters.show();
+            return;
+        }
+
+        // Hide posters that don't match the selected purpose
+        $posters.each(function() {
+            var posterPurpose = $(this).attr("data-asset-purpose");
+            if (posterPurpose !== purpose) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
+    // ...
+});
+
