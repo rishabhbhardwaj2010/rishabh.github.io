@@ -18,21 +18,29 @@ var allPosters = {{JSON.stringify(posters)}};
         renderPosters(filteredPosters);
     }
 
-    function renderPosters(posters) {
-        var posterContainer = document.getElementById("posters-container");
-        posterContainer.innerHTML = "";
+function renderPosters() {
+  var posterContainer = document.getElementById('posters-container');
+  posterContainer.innerHTML = '';
 
-        posters.forEach(function(poster) {
-            var posterCard = document.createElement("div");
-            posterCard.classList.add("poster-card");
+  filteredPosters.forEach(function(poster) {
+    // Create the poster card element
+    var posterCard = document.createElement('div');
+    posterCard.className = 'poster-card';
 
-            // Create poster card elements and populate with data
-            // ...
+    // Create and populate the poster title element
+    var posterTitle = document.createElement('h4');
+    posterTitle.textContent = poster.title;
+    posterCard.appendChild(posterTitle);
 
-            posterContainer.appendChild(posterCard);
-        });
-    }
+    // Create and populate the indication purpose element
+    var indicationPurpose = document.createElement('p');
+    indicationPurpose.textContent = 'Indication Purpose: ' + poster.indicationPurpose;
+    posterCard.appendChild(indicationPurpose);
 
+    // Append the poster card to the container
+    posterContainer.appendChild(posterCard);
+  });
+}
 
 <div>
         <label for="filter-purpose">Filter by Purpose:</label>
