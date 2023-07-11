@@ -1,126 +1,65 @@
-<div>
-            <input type="text" id="search-input" placeholder="Search by indication purpose">
-            <button onclick="searchPosters()">Search</button>
-</div>
 
-var allPosters = {{JSON.stringify(posters)}};
-
-    function searchPosters() {
-        var searchInput = document.getElementById("search-input").value.toLowerCase();
-        var filteredPosters = [];
-
-        // Filter posters by indication purpose
-        filteredPosters = allPosters.filter(function(poster) {
-            return poster.indicationPurpose.toLowerCase().includes(searchInput);
-        });
-
-        // Render filtered posters
-        renderPosters(filteredPosters);
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <style>
+    #back-to-top-btn {
+      display: none; /* Hide the button by default */
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      cursor: pointer;
+      padding: 10px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-function renderPosters() {
-  var posterContainer = document.getElementById('posters-container');
-  posterContainer.innerHTML = '';
+    #back-to-top-btn:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
 
-  if (filteredPosters.length === 0) {
-    // Display "No posters found" message
-    var noPostersMessage = document.createElement('p');
-    noPostersMessage.textContent = 'No posters found.';
-    posterContainer.appendChild(noPostersMessage);
-  } else {
-    // Display the poster cards
-    filteredPosters.forEach(function(poster) {
-      // Create the poster card element
-      var posterCard = document.createElement('div');
-      posterCard.className = 'poster-card';
-
-      // Create and populate the poster title element
-      var posterTitle = document.createElement('h4');
-      posterTitle.textContent = poster.title;
-      posterCard.appendChild(posterTitle);
-
-      // Create and populate the indication purpose element
-      var indicationPurpose = document.createElement('p');
-      indicationPurpose.textContent = 'Indication Purpose: ' + poster.indicationPurpose;
-      posterCard.appendChild(indicationPurpose);
-
-      // Append the poster card to the container
-      posterContainer.appendChild(posterCard);
-    });
-  }
-}
-
-
-<div>
-        <label for="filter-purpose">Filter by Purpose:</label>
-        <select id="filter-purpose">
-            <option value="">All</option>
-            <option value="Purpose 1">Purpose 1</option>
-            <option value="Purpose 2">Purpose 2</option>
-            <option value="Purpose 3">Purpose 3</option>
-            <!-- Add more options for different purposes -->
-        </select>
+<body>
+  <div class="page-container white lighten-3">
+    {{> cookieBanner}}
+    {{> header}}
+    {{> email}}
+    <div class="page-content">
+      {{{body}}}
     </div>
+    {{> footer}}
 
-$(document).ready(function(){
-    // ...
+    <button id="back-to-top-btn">Back to Top</button>
+  </div>
 
-    // Event listener for the filter dropdown
-    $("#filter-purpose").change(function() {
-        var selectedPurpose = $(this).val();
-        filterPostersByPurpose(selectedPurpose);
-    });
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel='stylesheet' href='/stylesheets/materialize-overrides.css' />
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    // Function to filter posters by purpose
-    function filterPostersByPurpose(purpose) {
-        var $posters = $(".posterCard");
+  <script>
+   
 
-        // Show all posters if no purpose is selected
-        if (purpose === "") {
-            $posters.show();
-            return;
+      // Show or hide the "Back to Top" button based on the scroll position
+      $(window).scroll(function() {
+        if ($(this).scrollTop() > 200) {
+          $('#back-to-top-btn').fadeIn();
+        } else {
+          $('#back-to-top-btn').fadeOut();
         }
+      });
 
-        // Hide posters that don't match the selected purpose
-        $posters.each(function() {
-            var posterPurpose = $(this).attr("data-asset-purpose");
-            if (posterPurpose !== purpose) {
-                $(this).hide();
-            } else {
-                $(this).show();
-            }
-        });
-    }
+      // Scroll to the top when the button is clicked
+      $('#back-to-top-btn').click(function() {
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        return false;
+      });
+    });
+  </script>
+</body>
 
-    // ...
-});
-
-//to handle /search.hbs
-
-const express = require('express');
-const app = express();
-
-// Existing route handlers
-const routes = [
-  require('./asset'),
-  require('./download'),
-  require('./sendmail'),
-  require('./export'),
-  require('./congress').linkedList,
-  require('./congress').congress,
-];
-
-// Add the route handler for /search
-app.get('/search', (req, res) => {
-  // Handle the search request here
-  // You can render the search.hbs template or send a response
-  res.render('search'); // Assuming you're using a template engine like Handlebars
-});
-
-// Add other route handlers
-routes.forEach(route => route(app));
-
-// Start the server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+</html>
