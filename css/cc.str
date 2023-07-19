@@ -63,3 +63,10 @@
 </body>
 
 </html>
+
+.sc-gTRrQi.iHCzWJ.rsc-cs {
+  background:#fff ;
+  padding: 0%;
+  margin-right: 50px;
+  border-radius: 20px 20px 20px 0px;
+}
