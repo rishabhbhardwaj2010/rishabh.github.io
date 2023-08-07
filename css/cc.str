@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", function() {
+        const dropdown = document.getElementById("dropdown");
+
+        dropdown.addEventListener("change", function() {
+            const selectedValue = dropdown.value;
+            if (selectedValue) {
+                // Use the selected value to scroll to the corresponding section
+                const targetSection = document.querySelector(`[data-asset-separator="${selectedValue}"]`);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        });
+    });
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   <style>
